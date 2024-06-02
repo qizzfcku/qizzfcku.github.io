@@ -1,11 +1,10 @@
 <script setup lang="ts">
-
 </script>
 
 <template>
   <div class="body">
     <h2>Комплекты стеллажных систем</h2>
-
+    <CatalogList/>
   </div>
 </template>
 
