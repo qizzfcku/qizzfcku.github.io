@@ -1,10 +1,15 @@
 <script setup lang="ts">
 
+const emit = defineEmits(['change']);
+
+const emitChange = (event: Event) => {
+  emit('change', event);
+}
 </script>
 
 <template>
   <form>
-    <select id="Select" class="select">
+    <select id="Select" class="select" @change="emitChange" v-bind="$attrs">
       <slot>
 
       </slot>
@@ -17,6 +22,6 @@
   background-color: #F2F2F2;
   border: 1px solid #EEEEEE;
   padding: 10px 5px;
-  width: 200px;
+  width: 250px;
 }
 </style>

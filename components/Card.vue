@@ -1,40 +1,33 @@
 <script setup lang="ts">
+interface Price {
+  old_price: number | null;
+  current_price: number;
+}
 
-defineProps( {
-  id: String,
-  image: {
-    type: String,
-    required: true,
-  },
-  code: {
-    type: String || null,
-    required: true,
-  },
-  title: {
-    type: String,
-    required: true,
-  },
-  price: {
-    type: Object,
-    required: true,
-    default: 0
-  },
+const props = defineProps<{
+  id: string;
+  image: string;
+  code: string | null;
+  title: string;
+  price: Price;
+}>();
 
-})
-
-const getPriceWithoutDecimal = (num) => {
-  if(num){
-    num = Math.floor(parseFloat(num));
+const getPriceWithoutDecimal = (price: number | null): number | null => {
+  if (price !== null) {
+    return Math.floor(price);
   }
-  return num;
+  return null;
 };
 
 </script>
 
 <template>
-  <div>
-    <img class="img_container" :src="image" :alt="id"/>
-    <span class="code">
+  <div class="card_container">
+    <div class="discount_container" v-if="price.old_price">
+        <span>Скидка</span>
+    </div>
+    <img class="item_image" :src="image" :alt="id"/>
+    <span class="code" v-if="code">
         {{ code }}
       </span>
     <span>
@@ -58,6 +51,19 @@ const getPriceWithoutDecimal = (num) => {
 </template>
 
 <style scoped>
+.card_container{
+  position: relative;
+}
+
+.discount_container{
+  position: absolute;
+  background: #EB5757;
+  color: #FFFFFF;
+  padding: 3px 15px;
+  left: 0;
+  top: 10px;
+}
+
 .code{
   font-size: 0.75rem;
   line-height: 1rem;
@@ -90,8 +96,10 @@ const getPriceWithoutDecimal = (num) => {
   scale: 125%;
 }
 
-.img_container {
-  width: 100%;
+.item_image {
+  display: flex;
+  margin: 0 auto ;
+  width: 80%;
   height: auto;
 }
 </style>

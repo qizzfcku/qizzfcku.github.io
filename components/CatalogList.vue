@@ -1,17 +1,37 @@
 <script setup>
+import {onMounted, watch} from "vue";
 import useItems from "~/composables/useItems.ts";
-import { onMounted} from "vue";
 
-const {items, fetchItems} = useItems();
+const props = defineProps({
+  priceSort: {
+    type: String,
+    default: "",
+  },
+  materialSort: {
+    type: String,
+    default: "",
+  },
 
-onMounted( ()=>{
-  fetchItems();
+})
+
+const {items, fetchItems, pending} = useItems();
+
+onMounted(() => {
+  fetchItems(props.priceSort, props.materialSort);
+});
+
+watch([() => props.priceSort, () => props.materialSort], ([newPriceSort, newMaterialSort]) => {
+  fetchItems(newPriceSort, newMaterialSort);
 });
 </script>
 
 <template>
   <div class="body">
+    <div v-if="pending">
+      <span>Загрузка</span>
+    </div>
     <Card
+        v-else
         class="card_cover"
         v-for="item in items"
         :key="item.id"
@@ -20,8 +40,7 @@ onMounted( ()=>{
         :title="item.name"
         :image="item.image.url"
         :price="item.price"
-    >
-    </Card>
+    />
   </div>
 </template>
 
@@ -31,7 +50,7 @@ onMounted( ()=>{
   padding: 0;
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 20px;
+  gap: 35px;
 }
 
 .card_cover {
