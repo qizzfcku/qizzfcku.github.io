@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { computed } from 'vue';
+import useCartAndFavorites from "~/composables/useCartAndFavorites";
+
 interface Price {
   old_price: number | null;
   current_price: number;
@@ -12,6 +15,8 @@ const props = defineProps<{
   price: Price;
 }>();
 
+const { toggleItemInCart, toggleItemInFavorites, isInCart, isInFavorites } = useCartAndFavorites();
+
 const getPriceWithoutDecimal = (price: number | null): number | null => {
   if (price !== null) {
     return Math.floor(price);
@@ -19,43 +24,39 @@ const getPriceWithoutDecimal = (price: number | null): number | null => {
   return null;
 };
 
+const cartIcon = computed(() => (isInCart(props.id) ? '/icons/checkmark.svg' : '/icons/cart.svg'));
+const favoriteIcon = computed(() => (isInFavorites(props.id) ? '/icons/redheart.svg' : '/icons/heart.svg'));
 </script>
 
 <template>
   <div class="card_container">
     <div class="discount_container" v-if="price.old_price">
-        <span>Скидка</span>
+      <span>Скидка</span>
     </div>
     <img class="item_image" :src="image" :alt="id"/>
-    <span class="code" v-if="code">
-        {{ code }}
-      </span>
-    <span>
-        {{ title }}
-      </span>
+    <span class="code" v-if="code">{{ code }}</span>
+    <span>{{ title }}</span>
     <div class="price_and_icons">
       <div>
-          <span class="old_price" v-if="price.old_price">
-            {{ getPriceWithoutDecimal(price.old_price) }}₽
-          </span>
-        <span>
-            {{ getPriceWithoutDecimal(price.current_price) }}₽
-          </span>
+        <span class="old_price" v-if="price.old_price">
+          {{ getPriceWithoutDecimal(price.old_price) }}₽
+        </span>
+        <span>{{ getPriceWithoutDecimal(price.current_price) }}₽</span>
       </div>
       <div>
-        <img class="icon_cart" src="/assets/icons/cart.svg" alt="cart"/>
-        <img class="icon_heart" src="/assets/icons/heart.svg" alt="heart"/>
+        <img class="icon_cart" :src="cartIcon" alt="cart" @click="toggleItemInCart(props.id)"/>
+        <img class="icon_heart" :src="favoriteIcon" alt="heart" @click="toggleItemInFavorites(props.id)"/>
       </div>
     </div>
   </div>
 </template>
 
 <style scoped>
-.card_container{
+.card_container {
   position: relative;
 }
 
-.discount_container{
+.discount_container {
   position: absolute;
   background: #EB5757;
   color: #FFFFFF;
@@ -64,41 +65,39 @@ const getPriceWithoutDecimal = (price: number | null): number | null => {
   top: 10px;
 }
 
-.code{
+.code {
   font-size: 0.75rem;
   line-height: 1rem;
   color: #888888;
 }
+
 .price_and_icons {
   display: flex;
+  margin-top: 10px;
   justify-content: space-between;
   align-items: center;
 }
 
-.old_price{
+.old_price {
   color: #888888;
   text-decoration: line-through;
   margin-right: 5px;
 }
 
-.icon_cart {
+.icon_cart, .icon_heart {
   margin-right: 30px;
-}
-.icon_cart:hover {
-  transition: ease-in-out;
-  transition-duration: 150ms;
-  scale: 125%;
+  cursor: pointer;
 }
 
-.icon_heart:hover {
+.icon_cart:hover, .icon_heart:hover {
   transition: ease-in-out;
   transition-duration: 150ms;
-  scale: 125%;
+  transform: scale(1.25);
 }
 
 .item_image {
   display: flex;
-  margin: 0 auto ;
+  margin: 0 auto;
   width: 80%;
   height: auto;
 }
