@@ -29,7 +29,7 @@ const changeSelectMaterial = (event: Event) => {
       <div>
         <label for='price_select' class="label_select">Сортировка по:</label>
         <my-select id="price_select" @change="changeSelectPrice">
-          <option value="" selected></option>
+          <option value="" selected>Нет</option>
           <option value="ascending">Цена по возрастанию</option>
           <option value="descending">Цена по убыванию</option>
         </my-select>
@@ -37,7 +37,7 @@ const changeSelectMaterial = (event: Event) => {
       <div>
         <label for="material_select" class="label_select">Материал:</label>
         <my-select id="material_select" @change="changeSelectMaterial">
-          <option value="" selected></option>
+          <option value="" selected>Все</option>
           <option
               v-for="material in materials"
               :key="material.id"
