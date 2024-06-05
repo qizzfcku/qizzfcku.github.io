@@ -49,7 +49,7 @@ watch([() => props.priceSort, () => props.materialSort], ([newPriceSort, newMate
   margin: 0;
   padding: 0;
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(1, minmax(0, 1fr));
   gap: 35px;
 }
 
@@ -58,5 +58,16 @@ watch([() => props.priceSort, () => props.materialSort], ([newPriceSort, newMate
   border: 1px solid #EEEEEE;
   display: grid;
   grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+@media (min-width: 800px){
+  .body {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+}
+@media (min-width:1200px){
+  .body {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
 }
 </style>

@@ -22,6 +22,11 @@ const emitChange = (event: Event) => {
   background-color: #F2F2F2;
   border: 1px solid #EEEEEE;
   padding: 10px 5px;
-  width: 250px;
+  width: 100%;
+}
+@media (min-width:800px) {
+  .select {
+    width: 250px;
+  }
 }
 </style>

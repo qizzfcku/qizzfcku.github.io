@@ -54,7 +54,14 @@ const changeSelectMaterial = (event: Event) => {
 
 <style scoped>
 .catalog {
-  margin: 50px 150px;
+  margin: 50px 150px;;
+}
+
+@media (max-width:800px) {
+  .catalog {
+    margin: 20px 50px;
+  }
+
 }
 .label_select{
   padding: 10px;
@@ -65,8 +72,14 @@ const changeSelectMaterial = (event: Event) => {
 
 .select {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   gap: 10px;
   margin-bottom: 20px;
+}
+
+@media (min-width:800px) {
+  .select {
+    flex-direction: row;
+  }
 }
 </style>
